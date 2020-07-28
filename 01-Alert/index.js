@@ -1,8 +1,5 @@
-import { fromEvent } from 'rxjs'
 import './index.css'
+import alert from './alert'
 
 const button = document.querySelector('button')
-
-const $click = fromEvent(button, 'click')
-
-$click.subscribe(() => alert('Errrrrrrr'))
+alert(button)
