@@ -25,8 +25,8 @@ module.exports = {
 				}
 			},
 			{
-				test: /\.css$/,
-				use: ['style-loader', 'css-loader']
+				test: /\.css$/i,
+				use: [MiniCssExtractPlugin.loader, 'css-loader']
 			}
 		]
 	},
@@ -48,7 +48,8 @@ module.exports = {
 			filename: '02/index.html',
 			template: '02-TodoList/index.html'
 		}),
-		new CleanWebpackPlugin()
+		new CleanWebpackPlugin(),
+		new MiniCssExtractPlugin()
 	],
 	devServer: {
 		contentBase: path.join(__dirname, 'dist'),
