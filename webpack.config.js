@@ -1,13 +1,29 @@
 const path = require('path')
+const fs = require('fs')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const files = fs.readdirSync(`./src`, (err, list) => {
+	if (err) throw err
+	return list
+})
+const entryObj = files.reduce((acc, val) => {
+	const title = val.split('-')
+	return { ...acc, [title]: `./src/${val}/index.js` }
+}, {})
+
+const pluginArr = files.map((f) => {
+	const [day, title] = f.split('-')
+	return new HtmlWebpackPlugin({
+		title: f,
+		chunks: [title],
+		filename: `${day}/index.html`,
+		template: `./src/${f}/index.html`
+	})
+})
 
 module.exports = {
-	entry: {
-		Alert: './01-Alert/index.js',
-		TodoList: './02-TodoList/index.js'
-	},
+	entry: entryObj,
 	output: {
 		filename: './[name]/index.bundle.js',
 		path: path.resolve(__dirname, 'dist')
@@ -36,18 +52,7 @@ module.exports = {
 			filename: 'index.html',
 			template: 'index.html'
 		}),
-		new HtmlWebpackPlugin({
-			title: '01-Alert',
-			chunks: ['Alert'],
-			filename: '01/index.html',
-			template: '01-Alert/index.html'
-		}),
-		new HtmlWebpackPlugin({
-			title: '02-TodoList',
-			chunks: ['TodoList'],
-			filename: '02/index.html',
-			template: '02-TodoList/index.html'
-		}),
+		...pluginArr,
 		new CleanWebpackPlugin(),
 		new MiniCssExtractPlugin()
 	],
