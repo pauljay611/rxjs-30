@@ -9,10 +9,8 @@ const files = fs.readdirSync(`./src`, (err, list) => {
 })
 const entryObj = files.reduce((acc, val) => {
 	const title = val.split('-')
-	console.log(title)
 	return { ...acc, [title[1]]: `./src/${val}/index.js` }
 }, {})
-console.log(entryObj)
 const pluginArr = files.map((f) => {
 	const [day, title] = f.split('-')
 	return new HtmlWebpackPlugin({
