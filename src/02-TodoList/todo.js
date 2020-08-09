@@ -1,10 +1,27 @@
 import { fromEvent, Subject } from 'rxjs'
 import { map, filter } from 'rxjs/operators'
 
+export function renderEmptyItem(index) {
+	const li = document.createElement('li')
+	li.classList.add(`el-${index}`)
+	li.innerHTML = getItemHTML(index)
+	return li
+}
+
+function getItemHTML(index) {
+	return `
+		<input class="input-${index}" placeholder="item" disabled />
+		<button class="btn-edit" data-index="${index}">Edit</button>
+		<button class="btn-delete" data-index="${index}">Delete</button>
+    `
+}
+
 export default function todo(list, add) {
 	const list$ = fromEvent(list, 'click')
 	const add$ = fromEvent(add, 'click')
+
 	const subject = new Subject()
+	let index = 0
 
 	const observable = list$.pipe(
 		filter((e) => e.target.matches('button')),
@@ -26,19 +43,7 @@ export default function todo(list, add) {
 	})
 
 	add$.subscribe(() => {
-		list.appendChild(renderEmptyItem())
-	})
-
-	let index = 0
-	function renderEmptyItem() {
-		const li = document.createElement('li')
-		li.classList.add(`el-${index}`)
-		li.innerHTML = `
-		    <input class="input-${index}" placeholder="item" disabled />
-		    <button class="btn-edit" data-index=${index}>Edit</button>
-		    <button class="btn-delete" data-index=${index}>Delete</button>
-        `
+		list.appendChild(renderEmptyItem(index))
 		index++
-		return li
-	}
+	})
 }
