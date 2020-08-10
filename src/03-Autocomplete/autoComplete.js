@@ -37,7 +37,6 @@ export default function autoComplete(input, panel) {
 			repeat()
 		)
 		.subscribe((v) => {
-			console.log(v)
 			panel.innerHTML = getSelectionHTML([
 				mockVal(v, 1),
 				mockVal(v, 2),
