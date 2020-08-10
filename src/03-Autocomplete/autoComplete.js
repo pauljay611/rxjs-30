@@ -1,14 +1,5 @@
 import { fromEvent } from 'rxjs'
-import {
-	map,
-	merge,
-	debounceTime,
-	mergeMap,
-	takeUntil,
-	concatAll,
-	switchMap,
-	repeat
-} from 'rxjs/operators'
+import { map, merge, debounceTime, takeUntil, repeat } from 'rxjs/operators'
 
 function mockVal(str, repeat = 1) {
 	return str.repeat(repeat)
