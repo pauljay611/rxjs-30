@@ -1,0 +1,20 @@
+.auto {
+	position: relative;
+	width: 200px;
+}
+
+.auto > input {
+	width: 100%;
+}
+
+.auto > .panel {
+	position: absolute;
+	top: 30px;
+	left: 0px;
+	width: 100%;
+	font-size: 1.2em;
+}
+
+.auto > .panel > p {
+	margin: 1px;
+}

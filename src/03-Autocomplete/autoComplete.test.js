@@ -1,6 +1,6 @@
 import alert from './alert'
 
-describe('Alert testing', () => {
+describe('AutoComplete testing', () => {
 	it('trigger alert', () => {
 		window.alert = jest.fn()
 		const button = document.createElement('button')

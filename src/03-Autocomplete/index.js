@@ -1,5 +1,6 @@
-import alert from './alert'
+import autoComplete from './autoComplete'
+import './index.css'
 
 const input = document.querySelector('input')
-const button = document.querySelector('button')
-alert(button, input)
+const panel = document.querySelector('.panel')
+autoComplete(input, panel)
