@@ -1,4 +1,5 @@
 import alert from './alert'
+import mockEvent from '../utils/mockEvent'
 
 describe('Alert testing', () => {
 	it('trigger alert', () => {
@@ -10,13 +11,7 @@ describe('Alert testing', () => {
 		alert(button, input)
 		input.value = expectMessage
 
-		if ('createEvent' in document) {
-			// create custom event
-			const evt = document.createEvent('HTMLEvents')
-			evt.initEvent('change', false, true)
-			input.dispatchEvent(evt)
-		}
-		// else input.fireEvent('onchange')
+		mockEvent('change', input)
 
 		button.click()
 		expect(window.alert).toBeCalledWith(expectMessage)

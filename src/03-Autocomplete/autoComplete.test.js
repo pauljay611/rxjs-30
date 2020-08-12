@@ -1,22 +1,30 @@
-import alert from './alert'
+import autoComplete, { getSelectionHTML, mockVal } from './autoComplete'
+import mockEvent from '../utils/mockEvent'
 
 describe('AutoComplete testing', () => {
-	it('trigger alert', () => {
+	it('should return correct list on focus and blur', () => {
 		window.alert = jest.fn()
-		const button = document.createElement('button')
 		const input = document.createElement('input')
-		const expectMessage = 'Errrrrr'
+		const panel = document.createElement('div')
+		panel.classList.add('panel')
+		const expectText = 'er'
+		const expectList = getSelectionHTML([
+			mockVal(expectText, 1),
+			mockVal(expectText, 2),
+			mockVal(expectText, 3)
+		])
 
-		alert(button, input)
-		input.value = expectMessage
+		autoComplete(input, panel)
 
-		if ('createEvent' in document) {
-			const evt = document.createEvent('HTMLEvents')
-			evt.initEvent('change', false, true)
-			input.dispatchEvent(evt)
-		} else input.fireEvent('onchange')
+		input.value = expectText
 
-		button.click()
-		expect(window.alert).toBeCalledWith(expectMessage)
+		mockEvent('focus', input)
+
+		setTimeout(function () {
+			expect(panel.innerHTML).toEqual(expectList)
+		}, 500)
+
+		mockEvent('blur', input)
+		expect(panel.innerHTML).toEqual('')
 	})
 })
