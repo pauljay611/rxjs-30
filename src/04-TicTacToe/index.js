@@ -1,5 +1,8 @@
-import alert from './alert'
+import './index.css'
+import tictactoe from './tictactoe'
 
-const input = document.querySelector('input')
-const button = document.querySelector('button')
-alert(button, input)
+const board = document.querySelector('.board')
+const player = document.querySelector('.player')
+const winner = document.querySelector('.winner')
+
+tictactoe(board, player, winner)

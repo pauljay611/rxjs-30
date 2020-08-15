@@ -1,0 +1,21 @@
+.board {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-flow: row wrap;
+	width: 500px;
+	height: 500px;
+}
+
+.board > .block {
+	width: 30%;
+	height: 30%;
+	font-size: 50px;
+	line-height: 150px;
+	text-align: center;
+	border: 1px solid black;
+}
+
+.panel {
+	font-size: 50px;
+}

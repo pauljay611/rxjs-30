@@ -3,10 +3,12 @@ const fs = require('fs')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const files = fs.readdirSync(`./src`, (err, list) => {
-	if (err) throw err
-	return list
-})
+const files = fs
+	.readdirSync(`./src`, (err, list) => {
+		if (err) throw err
+		return list
+	})
+	.filter((f) => f !== 'utils')
 const entryObj = files.reduce((acc, val) => {
 	const title = val.split('-')
 	return { ...acc, [title[1]]: `./src/${val}/index.js` }
