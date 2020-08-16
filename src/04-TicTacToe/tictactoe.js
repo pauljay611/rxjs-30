@@ -2,10 +2,12 @@ import { fromEvent } from 'rxjs'
 import { filter, map, takeWhile } from 'rxjs/operators'
 
 const winnerList = createWinnerTable()
+const initPlayer = 'O'
+let keepGoing = true
 
-export default function tictactoe(board, player, winner) {
-	const initPlayer = 'O'
+export default function tictactoe(board, player, reset) {
 	const board$ = fromEvent(board, 'click')
+	const reset$ = fromEvent(reset, 'click')
 	player.textContent = initPlayer
 	board$
 		.pipe(
@@ -15,21 +17,35 @@ export default function tictactoe(board, player, winner) {
 					fb.classList.contains('block') &&
 					fb.textContent.length === 0
 			),
-			takeWhile(() => winner.textContent.length === 0)
+			takeWhile(() => keepGoing)
 		)
 		.subscribe((e) => {
 			const curGame = board.querySelectorAll('.block')
 			e.textContent = player.textContent
 			if (checkWinner(e.dataset.index - 1, curGame, player.textContent)) {
-				window.alert('winnnnnnnnn')
-				winner.textContent = player.textContent
+				keepGoing = window.confirm(
+					player.textContent + ' winnnnnnnnn, next?'
+				)
+				keepGoing ??
+					resetBlock(player, board.querySelectorAll('.block'))
 			}
 			if (Array.from(curGame).every((b) => b.textContent.length > 0)) {
-				window.alert('Tie')
-				winner.textContent = 'Tie'
+				keepGoing = window.confirm('tietietie, next?')
+				keepGoing ??
+					resetBlock(player, board.querySelectorAll('.block'))
 			}
 			player.textContent = player.textContent === 'X' ? 'O' : 'X'
 		})
+	reset$.subscribe(() => {
+		resetBlock(player, board.querySelectorAll('.block'))
+	})
+}
+
+function resetBlock(player, blocks) {
+	player.textContent = initPlayer
+	blocks.forEach((block) => {
+		block.textContent = ''
+	})
 }
 
 function checkWinner(index, blockList, player) {
