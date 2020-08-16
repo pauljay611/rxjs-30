@@ -1,5 +1,12 @@
 import { fromEvent } from 'rxjs'
-import { map, merge, debounceTime, takeUntil, repeat } from 'rxjs/operators'
+import {
+	map,
+	merge,
+	debounceTime,
+	takeUntil,
+	repeat,
+	distinctUntilChanged
+} from 'rxjs/operators'
 
 export function mockVal(str, repeat = 1) {
 	return str.repeat(repeat)
@@ -25,6 +32,7 @@ export default function autoComplete(input, panel) {
 			debounceTime(500),
 			takeUntil(blur$),
 			map((e) => e.target.value),
+			distinctUntilChanged(),
 			repeat()
 		)
 		.subscribe((v) => {
