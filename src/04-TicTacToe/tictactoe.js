@@ -26,13 +26,15 @@ export default function tictactoe(board, player, reset) {
 				keepGoing = window.confirm(
 					player.textContent + ' winnnnnnnnn, next?'
 				)
-				keepGoing ??
+				if (keepGoing)
 					resetBlock(player, board.querySelectorAll('.block'))
+				return
 			}
 			if (Array.from(curGame).every((b) => b.textContent.length > 0)) {
 				keepGoing = window.confirm('tietietie, next?')
-				keepGoing ??
+				if (keepGoing)
 					resetBlock(player, board.querySelectorAll('.block'))
+				return
 			}
 			player.textContent = player.textContent === 'X' ? 'O' : 'X'
 		})
