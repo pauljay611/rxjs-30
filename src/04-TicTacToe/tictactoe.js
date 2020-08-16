@@ -36,7 +36,7 @@ export default function tictactoe(board, player, reset) {
 			}
 			player.textContent = player.textContent === 'X' ? 'O' : 'X'
 		})
-	reset$.subscribe(() => {
+	reset$.pipe(takeWhile(() => keepGoing)).subscribe(() => {
 		resetBlock(player, board.querySelectorAll('.block'))
 	})
 }
