@@ -1,7 +1,7 @@
 import { fromEvent } from 'rxjs'
 import { filter, map, takeWhile } from 'rxjs/operators'
 
-const winnerList = createWinnerAdjList()
+const winnerList = createWinnerTable()
 
 export default function tictactoe(board, player, winner) {
 	const initPlayer = 'O'
@@ -42,7 +42,7 @@ function checkWinner(index, blockList, player) {
 	return false
 }
 
-function createWinnerAdjList() {
+function createWinnerTable() {
 	const list = []
 
 	for (let i = 1, j = 1; i < 4; i++, j += 3) {
@@ -54,13 +54,13 @@ function createWinnerAdjList() {
 
 	list.push('159', '357')
 
-	const adjList = new Array(9)
+	const winTable = new Array(9)
 
 	for (let i = 0; i < 9; i++) {
-		adjList[i] = list
+		winTable[i] = list
 			.filter((item) => item.includes(String(i + 1)))
 			.map((f) => f.split('').filter((w) => w !== String(i + 1)))
 	}
 
-	return adjList
+	return winTable
 }
