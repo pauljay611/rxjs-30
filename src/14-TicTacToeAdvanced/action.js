@@ -1,12 +1,10 @@
 import { filter, map, withLatestFrom, tap } from 'rxjs/operators'
 import { gameState$ } from './gameState'
 
-export const getClickPosition$ = (board$) =>
-	board$.pipe(map((val) => val.target.dataset.index - 1))
-
 export const userClick$ = (board$) =>
-	getClickPosition$(board$).pipe(
+	board$.pipe(
+		map((val) => val.target.dataset.index - 1),
 		withLatestFrom(gameState$),
-		filter(([pos, state]) => state.board[pos] === ''),
+		filter(([pos, state]) => state.board[pos] === '' || pos < 0),
 		map(([pos]) => pos)
 	)

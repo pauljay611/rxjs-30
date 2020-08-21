@@ -1,17 +1,22 @@
 import { fromEvent } from 'rxjs'
-import { withLatestFrom, takeWhile, scan, map, tap } from 'rxjs/operators'
+import {
+	withLatestFrom,
+	takeWhile,
+	scan,
+	map,
+	tap,
+	merge
+} from 'rxjs/operators'
 import { userClick$ } from './action'
-import { gameState$ } from './gameState'
+import { gameState$, initState } from './gameState'
 import checkWinner from './checkWinner'
 
-const initPlayer = 'O'
-
-export default function tictactoe(board, player, blocks) {
+export default function tictactoe(board, player, blocks, reset) {
 	const board$ = fromEvent(board, 'click')
+	const reset$ = fromEvent(reset, 'click')
+	player.textContent = initState.nextPlayer
 
-	player.textContent = initPlayer
-
-	userClick$(board$)
+	userClick$(board$.pipe(merge(reset$)))
 		.pipe(
 			// compare prev state and next state
 			scan(updateState, gameState$.value),
@@ -33,6 +38,8 @@ export default function tictactoe(board, player, blocks) {
 }
 
 const updateState = (state, move) => {
+	if (move < 0) return JSON.parse(JSON.stringify(initState))
+
 	const updatedBoard = state.board
 	updatedBoard[move] = state.nextPlayer
 	const winner = checkWinner(move, updatedBoard, state.nextPlayer)

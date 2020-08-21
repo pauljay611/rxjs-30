@@ -1,6 +1,6 @@
 import { BehaviorSubject } from 'rxjs'
 
-const initState = {
+export const initState = {
 	board: Array(9).fill(''),
 	nextPlayer: 'O',
 	finished: false,
