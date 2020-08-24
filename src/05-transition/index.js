@@ -1,5 +1,6 @@
-import alert from './alert'
+import transition from './transition'
+import './index.css'
 
-const input = document.querySelector('input')
-const button = document.querySelector('button')
-alert(button, input)
+const circle = document.querySelector('.circle')
+
+transition(circle)
