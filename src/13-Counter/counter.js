@@ -1,30 +1,25 @@
-import { fromEvent, timer } from 'rxjs'
-import {
-	map,
-	merge,
-	exhaustMap,
-	startWith,
-	scan,
-	takeWhile,
-	tap
-} from 'rxjs/operators'
+import { fromEvent, timer, BehaviorSubject } from 'rxjs'
+import { map, exhaustMap, takeWhile, tap, withLatestFrom } from 'rxjs/operators'
 
 export default function counter(input, display) {
 	const input$ = fromEvent(input, 'change')
 	const timer$ = timer(1000, 20)
-	let current = 0
+	const currentNumber = new BehaviorSubject(0)
+
 	input$
 		.pipe(
 			map((e) => e.target.value),
 			exhaustMap((endTime) =>
 				timer$.pipe(
-					tap(() => current++),
-					takeWhile((val) => current <= endTime)
+					withLatestFrom(currentNumber),
+					map((_, n) => n),
+					tap((v) => currentNumber.next(v + 1)),
+					takeWhile((val) => val <= endTime)
 				)
 			)
 		)
 		.subscribe((val) => {
 			console.log(val)
-			display.innerHTML = current
+			display.innerHTML = val
 		})
 }
